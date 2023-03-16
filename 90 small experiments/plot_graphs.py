@@ -8,15 +8,15 @@ from scipy.stats import mannwhitneyu
 cost_df = pd.read_csv('./cost_compare.csv', header=0)
 time_df = pd.read_csv('./time_compare.csv', header=0)
 
-stat, p_value = mannwhitneyu(cost_df["Optimal cost"], cost_df["Raw ADMM"])
-print("Cost stats")
-print(f" Mann–Whitney U Test: statistic={stat:.4f}, p-value={p_value:.4f}")
+# stat, p_value = mannwhitneyu(cost_df["Raw ADMM"], cost_df["Raw CBAA"], alternative='less', nan_policy='omit')
+# print("Cost stats")
+# print(f" Mann–Whitney U Test: statistic={stat:.4f}, p-value={p_value:.4f}")
 
-stat, p_value = mannwhitneyu(time_df["Central"], time_df["Raw ADMM"])
-print("Wall clock time stats")
+# stat, p_value = mannwhitneyu(time_df["Raw ADMM"], time_df["Raw CBAA"], alternative='less', nan_policy='omit')
+# print("Wall clock time stats")
 # print(time_df["CBAA"], time_df["ADMM"])
-print(f" Mann–Whitney U Test: statistic={stat:.4f}, p-value={p_value:.4f}")
-exit()
+# print(f" Mann–Whitney U Test: statistic={stat:.4f}, p-value={p_value:.4f}")
+# exit()
 # from numpy import genfromtxt
 # np.set_printoptions(linewidth=np.inf, suppress=True)
 
@@ -36,7 +36,7 @@ exit()
 # data = df.to_numpy
 # print(data)
 
-fig = px.box(cost_df[["CBAA", "ADMM"]], points="all", labels={
+fig = px.violin(cost_df[["CBAA", "ADMM", "Greedy"]], points="all", labels={
                      "value": "Cost compared to optimal cost",
                      "variable": "Methods"
                  },)
@@ -46,14 +46,13 @@ fig.update_layout(
     legend_title="Legend Title",
     font=dict(
         family="Courier New, monospace",
-        size=36,
-        color="RebeccaPurple"
+        size=36
     )
 )
 
 fig.show()
 
-fig = px.box(time_df[["CBAA", "ADMM"]], points="all", labels={
+fig = px.violin(time_df[["CBAA", "ADMM", "ADMM_1"]], points="all", labels={
                      "value": "Wall clock time compared to centralized",
                      "variable": "Methods"
                  },)
@@ -63,8 +62,22 @@ fig.update_layout(
     legend_title="Legend Title",
     font=dict(
         family="Courier New, monospace",
-        size=36,
-        color="RebeccaPurple"
+        size=36
+    )
+)
+fig.show()
+
+fig = px.violin(time_df[["CBAA", "ADMM", "Greedy"]], points="all", labels={
+                     "value": "Wall clock time compared to centralized",
+                     "variable": "Methods"
+                 },)
+
+fig.update_layout(
+    title="Solving wall clock time",
+    legend_title="Legend Title",
+    font=dict(
+        family="Courier New, monospace",
+        size=36
     )
 )
 fig.show()

@@ -34,10 +34,13 @@ costs = [pair[1] for pair in solution_candidates]
 fig = go.Figure(data=go.Scatter(x=times, y=costs, mode='markers+lines'))
 fig.update_layout(xaxis_title='Log10(Time in seconds)', yaxis_title='Solution cost',
     font=dict(
-        family="Courier New, monospace",
+        family="Arial",
         size=36
-    ))
+    ),
+    width=1000,
+    height=1000)
 fig.update_yaxes(range=[0.0, 1500]) 
 
 # Show the plot in a new browser window
-fig.show()
+# fig.show()
+fig.write_image("../svg_files/MILP_solution_progression.svg")
